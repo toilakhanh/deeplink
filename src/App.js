@@ -36,8 +36,12 @@ import {
   LearnMoreLinks,
 } from 'react-native/Libraries/NewAppScreen';
 import {Provider} from 'react-redux';
-import {store} from './src/store';
-function App(): JSX.Element {
+import {useNavigation} from '@react-navigation/native';
+import {store} from './store';
+import {screenName} from './utils/const';
+
+function App() {
+  const navigation = useNavigation();
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -126,7 +130,10 @@ function App(): JSX.Element {
                 }}
                 onPress={() => onAppleButtonPress()}
               />
-              <Button title="Press me!!!" onPress={signIn} />
+              <Button
+                title="Press me!!!"
+                onPress={() => navigation.navigate(screenName.DETAILS)}
+              />
               <GoogleSigninButton />
               <LearnMoreLinks />
             </View>
