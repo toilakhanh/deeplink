@@ -1,4 +1,4 @@
 import HomeScreen from './homeScreen';
 import SettingScreen from './settingScreen';
-
-export {HomeScreen, SettingScreen};
+import DetailScreen from './detailScreen';
+export {HomeScreen, SettingScreen, DetailScreen};

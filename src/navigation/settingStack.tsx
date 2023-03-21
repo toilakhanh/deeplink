@@ -1,16 +1,19 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import * as React from 'react';
-import {SettingScreen} from 'src/screen';
-import {SettingStackParamList} from './types';
+import React from 'react';
+import {SettingScreen} from 'src/screen/';
 
-const Stack = createNativeStackNavigator<SettingStackParamList>();
+export type SettingStackParams = {
+  SettingScreen: undefined;
+};
 
-export default function SettingStack() {
+const SettingStack = createNativeStackNavigator<SettingStackParams>();
+
+export default function SettingScreenStack() {
   return (
-    <Stack.Navigator
+    <SettingStack.Navigator
       screenOptions={{headerShown: true}}
       initialRouteName="SettingScreen">
-      <Stack.Screen name="SettingScreen" component={SettingScreen} />
-    </Stack.Navigator>
+      <SettingStack.Screen name="SettingScreen" component={SettingScreen} />
+    </SettingStack.Navigator>
   );
 }

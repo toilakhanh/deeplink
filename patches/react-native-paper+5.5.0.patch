@@ -1,0 +1,68 @@
+diff --git a/node_modules/react-native-paper/src/components/BottomNavigation/BottomNavigationBar.tsx b/node_modules/react-native-paper/src/components/BottomNavigation/BottomNavigationBar.tsx
+index a3d9f6e..4be031e 100644
+--- a/node_modules/react-native-paper/src/components/BottomNavigation/BottomNavigationBar.tsx
++++ b/node_modules/react-native-paper/src/components/BottomNavigation/BottomNavigationBar.tsx
+@@ -10,6 +10,7 @@ import {
+   TouchableWithoutFeedbackProps,
+   View,
+   ViewStyle,
++  Dimensions
+ } from 'react-native';
+ 
+ import color from 'color';
+@@ -581,6 +582,18 @@ const BottomNavigationBar = <Route extends BaseRoute>({
+     bottom: safeAreaInsets?.bottom ?? bottom,
+   };
+ 
++  const leftPosition = React.useRef(new Animated.Value(0)).current;
++  const widthItem = Dimensions.get('window').width / routes.length;
++
++  const _slideIndicator = (index: number) => {
++    const left = widthItem * index;
++    Animated.timing(leftPosition, {
++      toValue: left,
++      duration: 200,
++      useNativeDriver: false,
++    }).start();
++  };
++
+   return (
+     <Surface
+       {...(theme.isV3 && { elevation: 0 })}
+@@ -619,6 +632,13 @@ const BottomNavigationBar = <Route extends BaseRoute>({
+         style={[styles.barContent, { backgroundColor }]}
+         testID={`${testID}-content`}
+       >
++        <Animated.View
++          style={{
++            ...styles.indicator,
++            width: widthItem,
++            left: leftPosition,
++          }}
++        />
+         <View
+           style={[
+             styles.items,
+@@ -753,7 +773,10 @@ const BottomNavigationBar = <Route extends BaseRoute>({
+               borderless: true,
+               centered: true,
+               rippleColor: isV3 ? 'transparent' : touchColor,
+-              onPress: () => onTabPress(eventForIndex(index)),
++              onPress: () => {
++                onTabPress(eventForIndex(index));
++                _slideIndicator(index);
++              },
+               onLongPress: () => onTabLongPress?.(eventForIndex(index)),
+               testID: getTestID({ route }),
+               accessibilityLabel: getAccessibilityLabel({ route }),
+@@ -1031,4 +1054,10 @@ const styles = StyleSheet.create({
+   elevation: {
+     elevation: 4,
+   },
++  indicator: {
++    backgroundColor: '#1877F2',
++    height: 2,
++    position: 'absolute',
++    top: 0,
++  },
+ });

@@ -1,14 +1,20 @@
-import {View, Text} from 'react-native';
+import {View, Text, Button, Dimensions} from 'react-native';
 import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {HomeStackParamList} from '@src/navigation/types';
+import {RootStackParams} from '../../navigation';
 
-const HomeScreen = ({
-  navigation,
-}: NativeStackScreenProps<HomeStackParamList, 'HomeScreen'>) => {
+type Props = NativeStackScreenProps<RootStackParams, 'HomeStack'>;
+
+const HomeScreen = ({navigation}: Props) => {
   return (
     <View>
       <Text>HomeScreen</Text>
+      <Button
+        title="Go to Detail"
+        onPress={() => {
+          navigation.navigate('DetailScreen', {name: 'String'});
+        }}
+      />
     </View>
   );
 };
