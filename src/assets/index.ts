@@ -1,7 +1,12 @@
-const HomeIcon = require('./icons/homeIcon.png');
-const WatchIcon = require('./icons/watchIcon.png');
-const GamingIcon = require('./icons/gamingIcon.png');
-const NotificationIcon = require('./icons/notificationIcon.png');
-const MenuIcon = require('./icons/menuIcon.png');
-
-export {HomeIcon, WatchIcon, GamingIcon, NotificationIcon, MenuIcon};
+export const HomeIcon = require('./icons/homeIcon.png');
+export const WatchIcon = require('./icons/watchIcon.png');
+export const GamingIcon = require('./icons/gamingIcon.png');
+export const NotificationIcon = require('./icons/notificationIcon.png');
+export const MenuIcon = require('./icons/menuIcon.png');
+export const PlusIcon = require('./icons/plusIcon.png');
+export const MessengerIcon = require('./icons/messengerIcon.png');
+export const SearchIcon = require('./icons/searchIcon.png');
+export const BoldMenuIcon = require('./icons/boldMenuIcon.png');
+export const BackIcon = require('./icons/backIcon.png');
+export const FacebookIcon = require('./icons/facebookIcon.png');
+export const BackgroundLoginImage = require('./images/backgroundLogin.png');

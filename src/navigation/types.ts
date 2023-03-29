@@ -3,18 +3,18 @@ export type HomeStackParamList = {
   DetailScreen: {id: string};
 };
 
-export type SettingStackParamList = {
-  SettingScreen: undefined;
+export type MenuStackParamList = {
+  MenuScreen: undefined;
 };
 
-// export type SettingScreenProps = {
+// export type MenuScreenProps = {
 //   navigation:
 // };
 
 export const ScreenList = {
   HOME_STACK: 'HomeStack',
-  SETTING_STACK: 'SettingStack',
+  SETTING_STACK: 'MenuStack',
   HOME_SCREEN: 'HomeScreen',
   DETAIL_SCREEN: 'DetailScreen',
-  SETTING_SCREEN: 'SettingScreen',
+  SETTING_SCREEN: 'MenuScreen',
 };

@@ -15,14 +15,19 @@ import {
   WatchIcon,
 } from '../assets';
 import HomeScreenStack, {HomeStackParams} from './homeStack';
-import SettingScreenStack from './settingStack';
+import MenuScreenStack from './menuStack';
 import {useTheme} from 'react-native-paper';
 import {colors} from '../assets/styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {LoginScreen} from 'src/screen';
 
 export type RootStackParams = {
-  HomeStack: NavigatorScreenParams<HomeStackParams>;
-  SettingStack: undefined;
+  Drawer: undefined;
+  HomeStack:
+    | NavigatorScreenParams<HomeStackParams>
+    | {isParentScreen: boolean; title: string};
+  MenuStack: undefined;
   WatchStack: undefined;
   GamingStack: undefined;
   NotificationStack: undefined;
@@ -81,7 +86,7 @@ function App() {
             case 'NotificationStack':
               iconName = NotificationIcon;
               break;
-            case 'SettingStack':
+            case 'MenuStack':
               iconName = MenuIcon;
               break;
             default:
@@ -111,40 +116,49 @@ function App() {
       />
       <Tab.Screen
         name="WatchStack"
-        component={SettingScreenStack}
+        component={MenuScreenStack}
         options={{
           tabBarLabel: 'Watch',
         }}
       />
       <Tab.Screen
         name="GamingStack"
-        component={SettingScreenStack}
+        component={MenuScreenStack}
         options={{
           tabBarLabel: 'Gaming',
         }}
       />
       <Tab.Screen
         name="NotificationStack"
-        component={SettingScreenStack}
+        component={MenuScreenStack}
         options={{
           tabBarLabel: 'Notification',
         }}
       />
       <Tab.Screen
-        name="SettingStack"
-        component={SettingScreenStack}
+        name="MenuStack"
+        component={MenuScreenStack}
         options={{
-          tabBarLabel: 'Setting',
+          tabBarLabel: 'Menu',
         }}
       />
     </Tab.Navigator>
   );
 }
 
+const Drawer = createDrawerNavigator();
+
 export default function AppRouter() {
   return (
     <NavigationContainer>
-      <App />
+      <Drawer.Navigator
+        initialRouteName="LoginScreen"
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+        <Drawer.Screen name="Tab" component={App} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
