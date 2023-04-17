@@ -2,6 +2,7 @@ import {
   Image,
   ImageResizeMode,
   ImageSourcePropType,
+  ImageStyle,
   //   StyleSheet,
 } from 'react-native';
 import React, {memo, useEffect, useState} from 'react';
@@ -14,18 +15,17 @@ type Props = {
   resizeMode?: ImageResizeMode;
   source?: ImageSourcePropType;
   uri?: string;
+  style?: ImageStyle;
 };
 
 const AppImage = memo((props: Props) => {
-  const {height, width = WIDTH, resizeMode, uri, source} = props;
+  const {height, width = WIDTH, resizeMode, uri, source, style} = props;
   const [heightAuto, setHeightAuto] = useState<number>(0);
 
   useEffect(() => {
     if (uri) {
       Image.getSize(uri, (widthImage, heightImage) => {
-        console.log(width, heightImage, widthImage);
         const newHeight = (width * heightImage) / widthImage;
-        console.log(newHeight);
         setHeightAuto(newHeight);
       });
     }
@@ -37,13 +37,13 @@ const AppImage = memo((props: Props) => {
         <Image
           source={source}
           resizeMode={resizeMode}
-          style={{width, height}}
+          style={{width, height, ...style}}
         />
       ) : (
         <Image
           source={{uri}}
           resizeMode={resizeMode}
-          style={{width, height: heightAuto}}
+          style={{width, height: heightAuto, ...style}}
         />
       )}
     </React.Fragment>

@@ -23,7 +23,7 @@ const HeaderComponent = () => {
           resizeMode={'stretch'}
         />
       </TouchableOpacity>
-      <Text style={styles.title}>{params?.title}</Text>
+      {/* <Text style={styles.title}>{params?.title}</Text> */}
     </View>
   );
 };

@@ -8,5 +8,7 @@ export const MessengerIcon = require('./icons/messengerIcon.png');
 export const SearchIcon = require('./icons/searchIcon.png');
 export const BoldMenuIcon = require('./icons/boldMenuIcon.png');
 export const BackIcon = require('./icons/backIcon.png');
+export const ImageGalleryIcon = require('./icons/imageGalleryIcon.png');
+export const MusicIcon = require('./icons/musicIcon.png');
 export const FacebookIcon = require('./icons/facebookIcon.png');
 export const BackgroundLoginImage = require('./images/backgroundLogin.png');

@@ -23,6 +23,7 @@ type Props = {
   style?: StyleProp<ViewStyle>;
   placeHolder?: string;
   keyboardType?: KeyboardType;
+  secureTextEntry?: boolean;
 };
 
 const AppTextInput = (props: Props) => {
@@ -38,6 +39,7 @@ const AppTextInput = (props: Props) => {
     style,
     placeHolder,
     keyboardType,
+    secureTextEntry,
   } = props;
   return (
     <View>
@@ -53,8 +55,9 @@ const AppTextInput = (props: Props) => {
         keyboardType={keyboardType}
         autoCorrect={false}
         spellCheck={false}
+        secureTextEntry={secureTextEntry}
       />
-      {/* {error && touched && <Text>{error}</Text>} */}
+      {error && touched && <Text>{error}</Text>}
     </View>
   );
 };

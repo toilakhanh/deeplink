@@ -20,7 +20,10 @@ import {useTheme} from 'react-native-paper';
 import {colors} from '../assets/styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {LoginScreen} from 'src/screen';
+import {LoginController} from '../controllers';
+import {useCustomDispatch} from '../hooks/reduxHook';
+import {loadToken} from '../store/authSlice';
+import {getUserToken} from '../utils/storage';
 
 export type RootStackParams = {
   Drawer: undefined;
@@ -146,17 +149,40 @@ function App() {
   );
 }
 
-const Drawer = createDrawerNavigator();
+export type DrawerParams = {
+  LoginScreen: undefined;
+  Tab: undefined;
+};
+
+const Drawer = createDrawerNavigator<DrawerParams>();
 
 export default function AppRouter() {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const dispatch = useCustomDispatch();
+
+  React.useEffect(() => {
+    const fetchToken = async () => {
+      const token = await getUserToken();
+      if (token) {
+        dispatch(loadToken(token.toString()));
+      }
+      setIsLoading(false);
+    };
+    fetchToken();
+  }, []);
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName="LoginScreen"
+        // initialRouteName="LoginScreen"
         screenOptions={{
           headerShown: false,
         }}>
-        <Drawer.Screen name="LoginScreen" component={LoginScreen} />
+        <Drawer.Screen name="LoginScreen" component={LoginController} />
         <Drawer.Screen name="Tab" component={App} />
       </Drawer.Navigator>
     </NavigationContainer>

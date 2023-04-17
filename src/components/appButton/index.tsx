@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: padding.p12,
-    borderRadius: padding.p8,
+    // paddingHorizontal: padding.p12,
+    // borderRadius: padding.p8,
   },
   defaultTextStyle: {
     color: colors.white,

@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {MenuScreen} from 'src/screen/';
+import {MenuScreen} from '@src/views';
 
 export type MenuStackParams = {
   MenuScreen: undefined;

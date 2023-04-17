@@ -1,118 +1,58 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import {useKeyboard} from '@react-native-community/hooks';
 import {Formik} from 'formik';
-import React, {useEffect, useRef} from 'react';
-import {Animated, ImageBackground, StyleSheet, Text, View} from 'react-native';
-import {Easing} from 'react-native-reanimated';
-import Reactotron from 'reactotron-react-native';
-import * as yup from 'yup';
+import React from 'react';
+import {Animated, StyleSheet, Text, View} from 'react-native';
 import {BackgroundLoginImage, FacebookIcon} from 'src/assets';
-import {colors, fontSize, HEIGHT, margin} from 'src/assets/styles';
+import {colors, fontSize, margin} from 'src/assets/styles';
 import AppButton from 'src/components/appButton';
 import AppTextInput from 'src/components/appTextInput';
+import {AccountState} from '../../store/authSlice';
+import {loginValidationSchema} from '../../utils/schema';
+import Lottie from 'lottie-react-native';
 
-const loginValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Please enter correct email')
-    .required('Email is required'),
-  password: yup
-    .string()
-    .min(8, ({min}) => `Passwords must be at least ${min} characters`)
-    .max(16, ({max}) => `Passwords must be at maximum ${max} characters`)
-    .required('Passwords is required')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-      'Passwords must have both letters and numbers',
-    ),
-});
+interface Props {
+  yBottomView: Animated.Value;
+  heightImage: Animated.Value;
+  sizeIcon: Animated.Value;
+  opacityImage: Animated.Value;
+  _login: (params: AccountState) => void;
+  loading: boolean;
+}
 
-const SCROLL_TIME = 320;
+const initialValues = {email: 'eve.holt@reqres.in', password: 'cityslicka'};
 
-const LoginScreen: React.FC = () => {
-  const keyboard = useKeyboard();
-  Reactotron.log(keyboard);
-  const yBottomView = useRef(new Animated.Value(50)).current;
-  const sizeIcon = useRef(new Animated.Value(70)).current;
-  const heightImage = useRef(new Animated.Value(200)).current;
-  const opacityImage = useRef(new Animated.Value(1)).current;
-
-  const scrollViewBot = () => {
-    const yBottom = HEIGHT - keyboard.coordinates.end.screenY;
-    Animated.timing(yBottomView, {
-      duration: SCROLL_TIME,
-      toValue: yBottom === 0 ? 50 : yBottom + 10,
-      useNativeDriver: false,
-      easing: Easing.bezier(0.25, 0.46, 0.45, 0.94).factory(),
-    }).start();
-  };
-
-  const scrollImage = () => {
-    const keyboardShown = HEIGHT > keyboard.coordinates.end.screenY;
-    Animated.timing(heightImage, {
-      duration: SCROLL_TIME,
-      toValue: keyboardShown ? 120 : 200,
-      useNativeDriver: false,
-    }).start();
-    Animated.timing(opacityImage, {
-      duration: SCROLL_TIME,
-      toValue: keyboardShown ? 0 : 1,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const scrollIcon = () => {
-    const keyboardShown = HEIGHT > keyboard.coordinates.end.screenY;
-    Animated.timing(sizeIcon, {
-      duration: SCROLL_TIME,
-      toValue: keyboardShown ? 50 : 70,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  useEffect(() => {
-    if (keyboard.coordinates.end.screenY <= 0) {
-      return;
-    }
-    scrollViewBot();
-    scrollImage();
-    scrollIcon();
-  }, [keyboard.coordinates.end.screenY]);
-
+const LoginScreen: React.FC<Props> = props => {
+  const {yBottomView, sizeIcon, heightImage, opacityImage, _login, loading} =
+    props;
   return (
     <View style={styles.container}>
       <Animated.View>
         <Animated.View
           style={{
-            backgroundColor: colors.darkBlue,
-            width: '100%',
+            ...styles.viewTop,
             height: heightImage,
-            justifyContent: 'center',
           }}>
           <Animated.Image
             source={BackgroundLoginImage}
             style={{
-              width: '100%',
+              ...styles.imgBackground,
               height: heightImage,
               opacity: opacityImage,
-              position: 'absolute',
             }}
           />
           <Animated.Image
             source={FacebookIcon}
             style={{
+              ...styles.logoTop,
               width: sizeIcon,
               height: sizeIcon,
-              alignSelf: 'center',
-              tintColor: colors.white,
             }}
           />
         </Animated.View>
       </Animated.View>
       <Formik
-        initialValues={{email: '', password: ''}}
+        initialValues={initialValues}
         validateOnMount
-        onSubmit={values => console.log(values)}
+        onSubmit={values => _login(values)}
         validationSchema={loginValidationSchema}>
         {({
           handleChange,
@@ -141,6 +81,7 @@ const LoginScreen: React.FC = () => {
               touched={touched.password}
               placeHolder={'Password'}
               style={styles.textInputPassword}
+              secureTextEntry
             />
             <AppButton
               title={'Log in'}
@@ -156,15 +97,13 @@ const LoginScreen: React.FC = () => {
         title={'Forgot Password?'}
         style={styles.buttonForgot}
         textStyle={styles.titleButton}
-        onPress={() => {
-          // updateBot(600);
-        }}
+        onPress={() => {}}
       />
-      <AppButton
+      {/* <AppButton
         title={'Back'}
         style={styles.buttonBack}
         textStyle={styles.titleButton}
-      />
+      /> */}
       <Animated.View style={[styles.viewBottom, {bottom: yBottomView}]}>
         <View style={styles.viewRow}>
           <View style={styles.line} />
@@ -177,6 +116,15 @@ const LoginScreen: React.FC = () => {
           textStyle={styles.titleCreate}
         />
       </Animated.View>
+      {loading && (
+        <View style={styles.viewLoading}>
+          <Lottie
+            source={require('src/assets/lottie/loading.json')}
+            autoPlay
+            loop
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -253,5 +201,27 @@ const styles = StyleSheet.create({
   viewBottom: {
     position: 'absolute',
     width: '100%',
+  },
+  viewTop: {
+    backgroundColor: colors.darkBlue,
+    width: '100%',
+    justifyContent: 'center',
+  },
+  imgBackground: {
+    width: '100%',
+    position: 'absolute',
+  },
+  logoTop: {
+    alignSelf: 'center',
+    tintColor: colors.white,
+  },
+  viewLoading: {
+    position: 'absolute',
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });

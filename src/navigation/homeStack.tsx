@@ -1,8 +1,9 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
 import {Text, View} from 'react-native';
-import {DetailScreen, HomeScreen} from 'src/screen';
+import {DetailScreen} from '@src/views';
 import HeaderComponent from '../components/headerComponent';
+import {HomeController} from '../controllers';
 
 export type HomeStackParams = {
   HomeScreen: {
@@ -20,7 +21,7 @@ export default function HomeScreenStack() {
     <HomeStack.Navigator screenOptions={{}} initialRouteName="HomeScreen">
       <HomeStack.Screen
         name="HomeScreen"
-        component={HomeScreen}
+        component={HomeController}
         options={{
           header: () => <HeaderComponent />,
         }}
